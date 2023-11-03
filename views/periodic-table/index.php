@@ -131,168 +131,46 @@
 		</script>
 
 		<script type="module">
-
+			// credit: original code is taken from an example in three.js website
+			// modified to requirements
 			import * as THREE from 'three';
 
 			import TWEEN from 'three/addons/libs/tween.module.js';
 			import { TrackballControls } from 'three/addons/controls/TrackballControls.js';
 			import { CSS3DRenderer, CSS3DObject } from 'three/addons/renderers/CSS3DRenderer.js';
 
-			// array for position in periodic table
-			const tablePosition = [
-				[1, 1],
-				[18, 1],
-				[1, 2],
-				[2, 2],
-				[13, 2],
-				[14, 2],
-				[15, 2],
-				[16, 2],
-				[17, 2],
-				[18, 2],
-				[1, 3],
-				[2, 3],
-				[13, 3],
-				[14, 3],
-				[15, 3],
-				[16, 3],
-				[17, 3],
-				[18, 3],
-				[1, 4],
-				[2, 4],
-				[3, 4],
-				[4, 4],
-				[5, 4],
-				[6, 4],
-				[7, 4],
-				[8, 4],
-				[9, 4],
-				[10, 4],
-				[11, 4],
-				[12, 4],
-				[13, 4],
-				[14, 4],
-				[15, 4],
-				[16, 4],
-				[17, 4],
-				[18, 4],
-				[1, 5],
-				[2, 5],
-				[3, 5],
-				[4, 5],
-				[5, 5],
-				[6, 5],
-				[7, 5],
-				[8, 5],
-				[9, 5],
-				[10, 5],
-				[11, 5],
-				[12, 5],
-				[13, 5],
-				[14, 5],
-				[15, 5],
-				[16, 5],
-				[17, 5],
-				[18, 5],
-				[1, 6],
-				[2, 6],
-				[4, 9],
-				[5, 9],
-				[6, 9],
-				[7, 9],
-				[8, 9],
-				[9, 9],
-				[10, 9],
-				[11, 9],
-				[12, 9],
-				[13, 9],
-				[14, 9],
-				[15, 9],
-				[16, 9],
-				[17, 9],
-				[18, 9],
-				[4, 6],
-				[5, 6],
-				[6, 6],
-				[7, 6],
-				[8, 6],
-				[9, 6],
-				[10, 6],
-				[11, 6],
-				[12, 6],
-				[13, 6],
-				[14, 6],
-				[15, 6],
-				[16, 6],
-				[17, 6],
-				[18, 6],
-				[1, 7],
-				[2, 7],
-				[4, 10],
-				[5, 10],
-				[6, 10],
-				[7, 10],
-				[8, 10],
-				[9, 10],
-				[10, 10],
-				[11, 10],
-				[12, 10],
-				[13, 10],
-				[14, 10],
-				[15, 10],
-				[16, 10],
-				[17, 10],
-				[18, 10],
-				[4, 7],
-				[5, 7],
-				[6, 7],
-				[7, 7],
-				[8, 7],
-				[9, 7],
-				[10, 7],
-				[11, 7],
-				[12, 7],
-				[13, 7],
-				[14, 7],
-				[15, 7],
-				[16, 7],
-				[17, 7],
-				[18, 7]
-			];
-
 			// import array
 			let passedArray =  <?php echo json_encode($values); ?>;
 			// assign to table			
 			let table = [];
+			let positionX = 0;
+			let positionY = 0;
 			for (let i = 0; i < passedArray.length; i++) {
-					// order in list
-					// 0 image src
-					table.push(passedArray[i][1]);
-					// 1 name
-					table.push(passedArray[i][0]);
-					// 2 hobby
-					table.push(passedArray[i][4]);
-					// 3 periodic-table position x
-					if ( i < tablePosition.length) {
-					table.push(tablePosition[i][0]);
-					}
-					else {
-						table.push(0);
-					}
-					// 4 periodic-table position y
-					if ( i < tablePosition.length) {
-					table.push(tablePosition[i][1]);
-					}
-					else {
-						table.push(0);
-					}
-					// 5 country code
-					table.push(passedArray[i][3]);
-					// 6 age
-					table.push(passedArray[i][2]);
-					// 7 net worth
-					let num = Number(passedArray[i][5].replace(/[\$,]/g, ''));
-					table.push(num);
+				// order in list
+				// 0 image src
+				table.push(passedArray[i][1]);
+				// 1 name
+				table.push(passedArray[i][0]);
+				// 2 hobby
+				table.push(passedArray[i][4]);
+				// 3 periodic-table position x / 4 periodic-table position y
+				if (positionX < 20) {
+					table.push(positionX);
+					table.push(positionY);
+					positionX = positionX + 1;
+				} else {
+					positionX = 0;
+					positionY = positionY + 1;
+					table.push(positionX);
+					table.push(positionY);
+				}
+				// 5 country code
+				table.push(passedArray[i][3]);
+				// 6 age
+				table.push(passedArray[i][2]);
+				// 7 net worth
+				let num = Number(passedArray[i][5].replace(/[\$,]/g, ''));
+				table.push(num);
 			}
 			console.log(table);
 			
@@ -542,7 +420,6 @@
 					object.lookAt( vector );
 
 					targets.helix.push( object );
-
 				}
 
 				// grid
